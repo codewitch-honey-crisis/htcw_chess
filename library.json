@@ -1,0 +1,24 @@
+{
+    "name": "htcw_chess",
+    "version": "0.1.0",
+    "description": "A chess engine implemented in C",
+    "keywords": ["game", "chess", "strategy"],
+    "authors": {
+        "name":"honey the codewitch",
+        "homepage": "https://www.codeproject.com/Members/code-witch"
+    },
+    "license": "MIT",
+    "frameworks": "*",
+    "platforms": "*",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/codewitch-honey-crisis/htcw_chess.git"
+    },
+    "export": {
+        "exclude":
+        [
+            ".vscode/*.*",
+            "lib/*.*"
+        ]
+    }
+}
