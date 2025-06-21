@@ -6,6 +6,7 @@ A simple chess engine written in C.
 - can preview available moves for a given piece, following the rules
 - can report the status of the board for any team at any time
 
+An example pocket chess game which uses it can be found [here](https://github.com/codewitch-honey-crisis/core2_chess)
 
 ```
 [env:node32s]
