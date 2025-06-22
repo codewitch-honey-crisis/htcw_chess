@@ -473,18 +473,18 @@ static chess_value_t compute_check_moves(const chess_game_t* game, chess_value_t
     }
     return result;
 }
-static void eliminate_checked_moves(const chess_game_t* game, chess_value_t index, const chess_value_t* kings, const chess_value_t* game_board, chess_value_t* in_out_moves, chess_value_t* in_out_moves_size) {
+static void eliminate_checked_moves(const chess_game_t* game, chess_value_t index, chess_value_t* in_out_moves, chess_value_t* in_out_moves_size) {
     if (index == -1) {
         return;
     }
     chess_value_t tmp_board[64];
-    const chess_value_t id = game_board[index];
+    const chess_value_t id = game->board[index];
     const chess_value_t team = CHESS_TEAM(id);
     const chess_value_t type = CHESS_TYPE(id);
-    if (kings[team] != index) {  // other piece
-        const chess_value_t king_index = kings[team];
+    if (game->kings[team] != index) {  // other piece
+        const chess_value_t king_index = game->kings[team];
         for (chess_value_t i = 0; i < *(in_out_moves_size); ++i) {
-            memcpy(tmp_board, game_board, sizeof(tmp_board));
+            memcpy(tmp_board, game->board, sizeof(tmp_board));
             tmp_board[index] = -1;
             tmp_board[in_out_moves[i]] = id;
             if (is_checked_king(game, king_index, tmp_board)) {
@@ -497,9 +497,9 @@ static void eliminate_checked_moves(const chess_game_t* game, chess_value_t inde
         }
     } else {  // king piece
         const chess_value_t king_index = index;
-        const chess_value_t king_id = game_board[king_index];
+        const chess_value_t king_id = game->board[king_index];
         for (chess_value_t i = 0; i < (*in_out_moves_size); ++i) {
-            memcpy(tmp_board, game_board, sizeof(tmp_board));
+            memcpy(tmp_board, game->board, sizeof(tmp_board));
             tmp_board[king_index] = -1;
             const chess_value_t move = in_out_moves[i];
             tmp_board[move] = king_id;
@@ -759,7 +759,7 @@ chess_size_t chess_compute_moves(const chess_game_t* game, chess_index_t index, 
         result = compute_check_moves(game, index, king_index, game->board, out_moves);
     } else {
         result = compute_moves(game, index, out_moves, game->board);
-        eliminate_checked_moves(game, index, game->kings, game->board, out_moves, &result);
+        eliminate_checked_moves(game, index, out_moves, &result);
         chess_value_t index_other = compute_castling(game, index, 0);
         if (index_other != -1) {
             out_moves[result++] = index_other;
@@ -801,7 +801,7 @@ chess_result_t chess_promote_pawn(chess_game_t* game, chess_index_t index, chess
     }
     const chess_value_t id = game->board[index];
     const chess_value_t team = CHESS_TEAM(id);
-    if (CHESS_TYPE(id) != CHESS_PAWN || team != game->turn) {
+    if (CHESS_TYPE(id) != CHESS_PAWN) {
         return 0;
     }
     if (team == 0) {
