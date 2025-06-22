@@ -88,7 +88,7 @@ chess_result_t chess_promote_pawn(chess_game_t* game, chess_index_t index, chess
 /// @brief Indicates the status of the game
 /// @param game The game
 /// @param team The team to check (0 or 1)
-/// @return Whether the game is in a normal state, a check state, or whether mate has occurred
+/// @return Whether the game is in a normal state, a check state, a stalemate, or whether checkmate has occurred
 chess_status_t chess_status(const chess_game_t* game, chess_team_t team);
 /// @brief Indicates which player's turn it is
 /// @param game The game
@@ -98,7 +98,7 @@ chess_team_t chess_turn(const chess_game_t* game);
 /// @param game The game
 /// @param index The index of the piece to retrieve
 /// @return the id or -1 if invalid or no piece present
-chess_index_t chess_index_to_id(const chess_game_t* game, chess_index_t index);
+chess_id_t chess_index_to_id(const chess_game_t* game, chess_index_t index);
 /// @brief Returns the canonical name for the board index, such as "b7"
 /// @param index The board index
 /// @param out_buffer A string buffer of at least 3 characters

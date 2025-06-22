@@ -774,7 +774,7 @@ chess_size_t chess_compute_moves(const chess_game_t* game, chess_index_t index, 
 chess_team_t chess_turn(const chess_game_t* game) {
     return game->turn;
 }
-chess_value_t chess_index_to_id(const chess_game_t* game, chess_value_t index) {
+chess_id_t chess_index_to_id(const chess_game_t* game, chess_index_t index) {
     if (game == NULL || index < 0 || index > 63) {
         return -1;
     }
