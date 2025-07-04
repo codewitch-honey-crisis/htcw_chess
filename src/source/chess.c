@@ -226,14 +226,14 @@ static chess_size_t compute_moves(const chess_game_t* game, chess_index_t index,
                             out_moves[result++] = tmp2;
                         }
                     }
-                    attack = index_advance_left(team, tmp);
-                    if (attack != -1 && game_board[attack] != -1 && CHESS_TEAM(game_board[attack]) != team) {
-                        out_moves[result++] = attack;
-                    }
-                    attack = index_advance_right(team, tmp);
-                    if (attack != -1 && game_board[attack] != -1 && CHESS_TEAM(game_board[attack]) != team) {
-                        out_moves[result++] = attack;
-                    }
+                    // attack = index_advance_left(team, tmp);
+                    // if (attack != -1 && game_board[attack] != -1 && CHESS_TEAM(game_board[attack]) != team) {
+                    //     out_moves[result++] = attack;
+                    // }
+                    // attack = index_advance_right(team, tmp);
+                    // if (attack != -1 && game_board[attack] != -1 && CHESS_TEAM(game_board[attack]) != team) {
+                    //     out_moves[result++] = attack;
+                    // }
                 }
             } else {
                 chess_value_t tmp = index_advance(team, index);
