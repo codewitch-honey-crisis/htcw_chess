@@ -733,6 +733,10 @@ chess_value_t chess_move(chess_game_t* game, chess_index_t index_from, chess_ind
         if (game->board[index_to] != -1 && CHESS_TEAM(game->board[index_to]) != team) {
             result = index_to;
         }
+        if(result!=-1) {
+            chess_id_t target_id = CHESS_TYPE(game->board[result]);
+            game->score[team] += scoring[target_id];
+        }
         game->board[index_to] = game->board[index_from];
         if (!added && game->board[index_to] != -1) {
             clear_en_passant_target(game, index_to);
@@ -744,10 +748,6 @@ chess_value_t chess_move(chess_game_t* game, chess_index_t index_from, chess_ind
             game->kings[CHESS_TEAM(id)] = index_to;
         }
         game->board[index_from] = -1;
-        if(result!=-1) {
-            chess_id_t target_id = CHESS_TYPE(game->board[result]);
-            game->score[team] += scoring[target_id];
-        }
         return result;
     }
     return -2;
