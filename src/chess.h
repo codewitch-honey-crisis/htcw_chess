@@ -6,6 +6,7 @@
 
 typedef signed char chess_value_t;
 
+/// @brief The type of chess piece
 typedef enum {
     CHESS_PAWN = 0,
     CHESS_BISHOP = 1,
@@ -15,6 +16,7 @@ typedef enum {
     CHESS_KING = 5
 } chess_type_t;
 
+/// @brief The board status
 typedef enum {
     CHESS_NORMAL = 0,
     CHESS_CHECK = 1,
@@ -23,16 +25,19 @@ typedef enum {
 
 } chess_status_t;
 
+/// @brief A result code
 typedef enum {
     CHESS_SUCCESS = 0,
     CHESS_INVALID = 1
 } chess_result_t;
 
+/// @brief The chess team
 typedef enum {
     CHESS_FIRST = 0,
     CHESS_SECOND = 1
 } chess_team_t;
 
+/// @brief A boolean
 typedef enum {
     CHESS_FALSE = 0,
     CHESS_TRUE = !CHESS_FALSE
@@ -41,18 +46,21 @@ typedef enum {
 typedef chess_value_t chess_index_t;
 typedef chess_value_t chess_id_t;
 typedef chess_value_t chess_size_t;
+typedef unsigned int chess_score_t;
 
 #define CHESS_TEAM(id) ((chess_team_t)(!!(((chess_value_t)id) & (1 << 3))))
 #define CHESS_TYPE(id) ((chess_type_t)(id & 7))
 #define CHESS_ID(team, type) (((chess_value_t)(team) ? (1 << 3) : (0 << 3)) | (int)type)
 #define CHESS_NONE ((chess_value_t)-1)
 
+/// @brief The state for the chess game
 typedef struct {
     chess_id_t board[64];
     chess_index_t kings[2];
     chess_index_t en_passant_targets[16];
     chess_team_t turn;
     chess_bool_t no_castle[2];
+    chess_score_t score[2];
 } chess_game_t;
 
 #ifdef __cplusplus
@@ -104,6 +112,10 @@ chess_id_t chess_index_to_id(const chess_game_t* game, chess_index_t index);
 /// @param out_buffer A string buffer of at least 3 characters
 /// @return Nonzero if the operation was successful, otherwise zero if invalid argument
 chess_result_t chess_index_name(chess_index_t index, char* out_buffer);
+/// @brief Indicates the score of a given team
+/// @param team The team to return the score for
+/// @return The score for the team
+chess_score_t chess_score(const chess_game_t* game, chess_team_t team);
 #ifdef __cplusplus
 }
 #endif
