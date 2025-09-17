@@ -205,7 +205,7 @@ static chess_value_t en_passant_target_from_move(const chess_game_t* game, chess
     }
     return is_en_passant_target(game, tmp) ? tmp : -1;
 }
-static chess_size_t compute_moves(const chess_game_t* game, chess_index_t index, chess_index_t* out_moves, const chess_id_t* game_board) {
+static size_t compute_moves(const chess_game_t* game, chess_index_t index, chess_index_t* out_moves, const chess_id_t* game_board) {
     const chess_value_t id = game_board[index];
     if (id == -1) {
         return 0;
@@ -410,13 +410,13 @@ static chess_size_t compute_moves(const chess_game_t* game, chess_index_t index,
     }
     return result;
 }
-chess_bool_t chess_contains_move(const chess_index_t* moves, chess_size_t moves_size, chess_index_t index) {
+bool chess_contains_move(const chess_index_t* moves, size_t moves_size, chess_index_t index) {
     for (chess_value_t i = 0; i < moves_size; ++i) {
         if (moves[i] == index) {
-            return CHESS_TRUE;
+            return true;
         }
     }
-    return CHESS_FALSE;
+    return false;
 }
 static chess_value_t is_checked_king(const chess_game_t* game, chess_value_t king_index, const chess_value_t* game_board) {
     chess_value_t tmp_moves[64];
@@ -752,7 +752,7 @@ chess_value_t chess_move(chess_game_t* game, chess_index_t index_from, chess_ind
     }
     return -2;
 }
-chess_size_t chess_compute_moves(const chess_game_t* game, chess_index_t index, chess_index_t* out_moves) {
+size_t chess_compute_moves(const chess_game_t* game, chess_index_t index, chess_index_t* out_moves) {
     if (game == NULL || index < 0 || index > 63) {
         return 0;
     }

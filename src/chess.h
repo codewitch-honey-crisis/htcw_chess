@@ -3,7 +3,8 @@
 // MIT license
 #ifndef CHESS_H
 #define CHESS_H
-
+#include <stdbool.h>
+#include <stddef.h>
 typedef signed char chess_value_t;
 
 /// @brief The type of chess piece
@@ -18,48 +19,59 @@ typedef enum {
 
 /// @brief The board status
 typedef enum {
+    /// @brief Normal play state
     CHESS_NORMAL = 0,
+    /// @brief A king is in check
     CHESS_CHECK = 1,
+    /// @brief A king is in checkmate
     CHESS_CHECKMATE  = 2,
+    /// @brief The game is a stalemate
     CHESS_STALEMATE = 3
-
 } chess_status_t;
 
 /// @brief A result code
 typedef enum {
+    /// @brief The operation completed successfully
     CHESS_SUCCESS = 0,
+    /// @brief An invalid argument was passed
     CHESS_INVALID = 1
 } chess_result_t;
 
 /// @brief The chess team
 typedef enum {
-    CHESS_FIRST = 0,
-    CHESS_SECOND = 1
+    CHESS_WHITE = 0,
+    CHESS_BLACK = 1
 } chess_team_t;
 
-/// @brief A boolean
-typedef enum {
-    CHESS_FALSE = 0,
-    CHESS_TRUE = !CHESS_FALSE
-} chess_bool_t;
-
+/// @brief An index into the chess board
 typedef chess_value_t chess_index_t;
+/// @brief The id (team and type) of a piece
 typedef chess_value_t chess_id_t;
-typedef chess_value_t chess_size_t;
+/// @brief A chess score value
 typedef unsigned int chess_score_t;
 
+// Retrieves the chess team from a chess id
 #define CHESS_TEAM(id) ((chess_team_t)(!!(((chess_value_t)id) & (1 << 3))))
+// Retrieves the chess piece type from a chess id
 #define CHESS_TYPE(id) ((chess_type_t)(id & 7))
+// Crates a chess id from a chess team and piece type
 #define CHESS_ID(team, type) (((chess_value_t)(team) ? (1 << 3) : (0 << 3)) | (int)type)
+// alias for a non-value
 #define CHESS_NONE ((chess_value_t)-1)
 
-/// @brief The state for the chess game
+/// @brief The state for the chess game (effectively private)
 typedef struct {
+    /// @brief The board, each containing an id
     chess_id_t board[64];
+    /// @brief The location of each king
     chess_index_t kings[2];
+    /// @brief Targets for possible en passant captures
     chess_index_t en_passant_targets[16];
+    /// @brief Which turn it is
     chess_team_t turn;
-    chess_bool_t no_castle[2];
+    /// @brief Indicates that no castling can take place
+    bool no_castle[2];
+    /// @brief Indicates the current scores
     chess_score_t score[2];
 } chess_game_t;
 
@@ -80,13 +92,13 @@ chess_index_t chess_move(chess_game_t* game, chess_index_t index_from, chess_ind
 /// @param index The index on the board for the piece to compute
 /// @param out_moves The moves array to write to (should be at least 64 length)
 /// @return The count of moves written
-chess_size_t chess_compute_moves(const chess_game_t* game, chess_index_t index, chess_index_t* out_moves);
+size_t chess_compute_moves(const chess_game_t* game, chess_index_t index, chess_index_t* out_moves);
 /// @brief Indicates whether an array of move destinations contains the specified index
 /// @param moves The moves array
 /// @param moves_size The size of the moves array
 /// @param index The index to compare
 /// @return Nonzero if the move is present, otherwise zero
-chess_bool_t chess_contains_move(const chess_index_t* moves, chess_size_t moves_size, chess_index_t index);
+bool chess_contains_move(const chess_index_t* moves, size_t moves_size, chess_index_t index);
 /// @brief Promotes a pawn that has reached the end of the board
 /// @param game The chess game
 /// @param index The index of the pawn
