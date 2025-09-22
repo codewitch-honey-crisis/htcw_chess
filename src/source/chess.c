@@ -215,7 +215,7 @@ static size_t compute_moves(const chess_game_t* game, chess_index_t index, chess
     chess_value_t result = 0;
     switch (type) {
         case CHESS_PAWN:
-            if ((team == 0 && index < 16) || (team == 1 && index > (64 - 16))) {  // the pawn is on its first move
+            if ((team == 0 && index < 16) || (team == 1 && index >= (64 - 16))) {  // the pawn is on its first move
                 chess_value_t tmp = index_advance(team, index);
                 if (tmp != -1) {
                     if (game_board[tmp] == -1) {
@@ -420,7 +420,6 @@ bool chess_contains_move(const chess_index_t* moves, size_t moves_size, chess_in
 }
 static chess_value_t is_checked_king(const chess_game_t* game, chess_value_t king_index, const chess_value_t* game_board) {
     chess_value_t tmp_moves[64];
-    chess_value_t result = 0;
     if (king_index == -1) {
         return 0;
     }
@@ -429,7 +428,6 @@ static chess_value_t is_checked_king(const chess_game_t* game, chess_value_t kin
         return 0;
     }
     const chess_value_t team = CHESS_TEAM(id);
-    chess_value_t c = 0;
     for (chess_value_t i = 0; i < 64; ++i) {
         const chess_value_t id_cmp = game_board[i];
         if (id_cmp != -1) {
@@ -481,7 +479,6 @@ static void eliminate_checked_moves(const chess_game_t* game, chess_value_t inde
     chess_value_t tmp_board[64];
     const chess_value_t id = game->board[index];
     const chess_value_t team = CHESS_TEAM(id);
-    const chess_value_t type = CHESS_TYPE(id);
     if (game->kings[team] != index) {  // other piece
         const chess_value_t king_index = game->kings[team];
         for (chess_value_t i = 0; i < *(in_out_moves_size); ++i) {
