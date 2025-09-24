@@ -97,7 +97,7 @@ size_t chess_compute_moves(const chess_game_t* game, chess_index_t index, chess_
 /// @param moves The moves array
 /// @param moves_size The size of the moves array
 /// @param index The index to compare
-/// @return Nonzero if the move is present, otherwise zero
+/// @return true if the move was present, otherwise false
 bool chess_contains_move(const chess_index_t* moves, size_t moves_size, chess_index_t index);
 /// @brief Promotes a pawn that has reached the end of the board
 /// @param game The chess game
