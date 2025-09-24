@@ -103,7 +103,7 @@ bool chess_contains_move(const chess_index_t* moves, size_t moves_size, chess_in
 /// @param game The chess game
 /// @param index The index of the pawn
 /// @param new_type The new chess piece type
-/// @return Nonzero if the promotion was successful, otherwise zero
+/// @return CHESS_SUCCESS if the promotion was successful, otherwise CHESS_INVALID
 chess_result_t chess_promote_pawn(chess_game_t* game, chess_index_t index, chess_type_t new_type);
 /// @brief Indicates the status of the game
 /// @param game The game
@@ -122,7 +122,7 @@ chess_id_t chess_index_to_id(const chess_game_t* game, chess_index_t index);
 /// @brief Returns the canonical name for the board index, such as "b7"
 /// @param index The board index
 /// @param out_buffer A string buffer of at least 3 characters
-/// @return Nonzero if the operation was successful, otherwise zero if invalid argument
+/// @return CHESS_SUCCESS if the operation was successful, otherwise CHESS_INVALID if invalid argument
 chess_result_t chess_index_name(chess_index_t index, char* out_buffer);
 /// @brief Indicates the score of a given team
 /// @param team The team to return the score for

@@ -806,19 +806,23 @@ chess_result_t chess_promote_pawn(chess_game_t* game, chess_index_t index, chess
     const chess_value_t id = game->board[index];
     const chess_value_t team = CHESS_TEAM(id);
     if (CHESS_TYPE(id) != CHESS_PAWN) {
-        return 0;
+        printf("DEBUG: INVALID TYPE. Id: %d, Team: %d, Type: %d, Index: %d\n",(int)id,(int)team,CHESS_TYPE(id), (int)index);
+        return CHESS_INVALID;
     }
-    if (team == 0) {
+    if (team == CHESS_WHITE) {
         if (index < (64 - 8)) {
-            return 0;
+            puts("DEBUG: INVALID SQUARE BOTTOM");
+            return CHESS_INVALID;
         }
     } else {
         if (index > 7) {
-            return 0;
+            puts("DEBUG: INVALID SQUARE TOP");
+            return CHESS_INVALID;
         }
     }
     clear_en_passant_target(game, index);
     game->board[index] = CHESS_ID(team, new_type);
+    puts("DEBUG: PROMOTE SUCCESS");
     return CHESS_SUCCESS;
 }
 chess_result_t chess_index_name(chess_index_t index, char* out_buffer) {
