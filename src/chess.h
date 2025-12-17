@@ -5,6 +5,10 @@
 #define CHESS_H
 #include <stdbool.h>
 #include <stddef.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 typedef signed char chess_value_t;
 
 /// @brief The type of chess piece
@@ -50,15 +54,6 @@ typedef chess_value_t chess_id_t;
 /// @brief A chess score value
 typedef unsigned int chess_score_t;
 
-// Retrieves the chess team from a chess id
-#define CHESS_TEAM(id) ((chess_team_t)(!!(((chess_value_t)id) & (1 << 3))))
-// Retrieves the chess piece type from a chess id
-#define CHESS_TYPE(id) ((chess_type_t)(id & 7))
-// Crates a chess id from a chess team and piece type
-#define CHESS_ID(team, type) (((chess_value_t)(team) ? (1 << 3) : (0 << 3)) | (int)type)
-// alias for a non-value
-#define CHESS_NONE ((chess_value_t)-1)
-
 /// @brief The state for the chess game (effectively private)
 typedef struct {
     /// @brief The board, each containing an id
@@ -75,9 +70,6 @@ typedef struct {
     chess_score_t score[2];
 } chess_game_t;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 /// @brief Initializes a new chess game
 /// @param out_game The structure holding the game
 void chess_init(chess_game_t* out_game);
@@ -131,5 +123,14 @@ chess_score_t chess_score(const chess_game_t* game, chess_team_t team);
 #ifdef __cplusplus
 }
 #endif
+
+// Retrieves the chess team from a chess id
+#define CHESS_TEAM(id) ((chess_team_t)(!!(((chess_value_t)id) & (1 << 3))))
+// Retrieves the chess piece type from a chess id
+#define CHESS_TYPE(id) ((chess_type_t)(id & 7))
+// Crates a chess id from a chess team and piece type
+#define CHESS_ID(team, type) (((chess_value_t)(team) ? (1 << 3) : (0 << 3)) | (int)type)
+// alias for a non-value
+#define CHESS_NONE ((chess_value_t)-1)
 
 #endif // CHESS_H
