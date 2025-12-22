@@ -35,10 +35,10 @@ typedef enum {
 
 /// @brief A result code
 typedef enum {
-    /// @brief The operation completed successfully
-    CHESS_SUCCESS = 0,
     /// @brief An invalid argument was passed
-    CHESS_INVALID = 1
+    CHESS_INVALID = -1,
+    /// @brief The operation completed successfully
+    CHESS_SUCCESS = 0
 } chess_result_t;
 
 /// @brief The chess team
@@ -77,7 +77,7 @@ void chess_init(chess_game_t* out_game);
 /// @param game the chess game  
 /// @param index_from The index to move from
 /// @param index_to The index to move to.
-/// @return The index of the capture victim if successful. -1 if no capture. -2 on illegal move or invalid arguments
+/// @return The index of the capture victim if successful. -1/CHESS_NONE if no capture. -2 on illegal move or invalid arguments
 chess_index_t chess_move(chess_game_t* game, chess_index_t index_from, chess_index_t index_to);
 /// @brief Computes the available moves for a specified piece on the board
 /// @param game The chess game
