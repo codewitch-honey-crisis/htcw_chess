@@ -9,6 +9,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#ifndef CHESS_STALEMATE_HISTORY_SIZE
+#define CHESS_STALEMATE_HISTORY_SIZE 4
+#endif
+
 typedef signed char chess_value_t;
 
 /// @brief The type of chess piece
@@ -60,6 +65,8 @@ typedef struct {
     chess_id_t board[64];
     /// @brief The location of each king
     chess_index_t kings[2];
+    /// @brief Holds the king move history for stalemate detection
+    chess_index_t kings_history[(CHESS_STALEMATE_HISTORY_SIZE)*2];
     /// @brief Targets for possible en passant captures
     chess_index_t en_passant_targets[16];
     /// @brief Which turn it is
@@ -99,9 +106,10 @@ bool chess_contains_move(const chess_index_t* moves, size_t moves_size, chess_in
 chess_result_t chess_promote_pawn(chess_game_t* game, chess_index_t index, chess_type_t new_type);
 /// @brief Indicates the status of the game
 /// @param game The game
-/// @param team The team to check (0 or 1)
-/// @return Whether the game is in a normal state, a check state, a stalemate, or whether checkmate has occurred
-chess_status_t chess_status(const chess_game_t* game, chess_team_t team);
+/// @param out_white_status The white status
+/// @param out_black_status The black status
+/// @return True if the game can continue, otherwise false
+bool chess_status(const chess_game_t* game,  chess_status_t* out_white_status, chess_status_t* out_black_status);
 /// @brief Indicates which player's turn it is
 /// @param game The game
 /// @return a chess_team_t indicating the team that is up
@@ -117,9 +125,16 @@ chess_id_t chess_index_to_id(const chess_game_t* game, chess_index_t index);
 /// @return CHESS_SUCCESS if the operation was successful, otherwise CHESS_INVALID if invalid argument
 chess_result_t chess_index_name(chess_index_t index, char* out_buffer);
 /// @brief Indicates the score of a given team
+/// @param game The game
 /// @param team The team to return the score for
 /// @return The score for the team
 chess_score_t chess_score(const chess_game_t* game, chess_team_t team);
+
+/// @brief Indicates whether or not a team's king can castle
+/// @param game The game
+/// @param team The team to return the castle status for
+/// @return True if the team's king can castle, otherwise false
+bool chess_can_castle(const chess_game_t* game, chess_team_t team);
 #ifdef __cplusplus
 }
 #endif
