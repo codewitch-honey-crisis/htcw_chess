@@ -545,9 +545,7 @@ void chess_init(chess_game_t* out_game) {
     out_game->score[1] = 0;
     out_game->no_castle[0] = 0;
     out_game->no_castle[1] = 0;
-    for(int i = 0;i<4;++i) {
-        out_game->kings_history[i] = CHESS_NONE;
-    }
+    
     for (int i = 0; i < 16; ++i) {
         out_game->en_passant_targets[i] = CHESS_NONE;
     }
@@ -708,18 +706,6 @@ static chess_value_t compute_castling(const chess_game_t* game, chess_value_t in
 
     return index_other;
 }
-static void update_king_history(chess_game_t* game) {
-    for(int team = 0; team<2;++team) {
-        for(int i = 1;i<CHESS_STALEMATE_HISTORY_SIZE;++i) {
-            const int idx = i*2+team;
-            const int prev = idx - 1;
-            game->kings_history[prev]=game->kings_history[idx];
-        }
-    }
-    game->kings_history[(CHESS_STALEMATE_HISTORY_SIZE*2-2)]=game->kings[0];
-    game->kings_history[(CHESS_STALEMATE_HISTORY_SIZE*2-1)]=game->kings[1];
-    
-}
 chess_value_t chess_move(chess_game_t* game, chess_index_t index_from, chess_index_t index_to) {
     if (game == NULL || index_from < 0 || index_from > 63 || index_to < 0 || index_to > 63 || index_from == index_to) {
         return -2;
@@ -750,7 +736,6 @@ chess_value_t chess_move(chess_game_t* game, chess_index_t index_from, chess_ind
             game->board[index_to] = game->board[index_from];
             game->board[index_from] = other_id;
             if (type == CHESS_KING) {
-                update_king_history(game);
                 game->kings[team] = index_to;
                 
             }
@@ -809,7 +794,6 @@ chess_value_t chess_move(chess_game_t* game, chess_index_t index_from, chess_ind
             game->turn = 0;
         }
         if (CHESS_TYPE(id) == CHESS_KING) {
-            update_king_history(game);
             game->kings[team] = index_to;
         }
         game->board[index_from] = CHESS_NONE;

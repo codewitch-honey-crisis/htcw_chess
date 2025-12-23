@@ -10,10 +10,6 @@
 extern "C" {
 #endif
 
-#ifndef CHESS_STALEMATE_HISTORY_SIZE
-#define CHESS_STALEMATE_HISTORY_SIZE 4
-#endif
-
 typedef signed char chess_value_t;
 
 /// @brief The type of chess piece
@@ -65,8 +61,6 @@ typedef struct {
     chess_id_t board[64];
     /// @brief The location of each king
     chess_index_t kings[2];
-    /// @brief Holds the king move history for stalemate detection
-    chess_index_t kings_history[(CHESS_STALEMATE_HISTORY_SIZE)*2];
     /// @brief Targets for possible en passant captures
     chess_index_t en_passant_targets[16];
     /// @brief Which turn it is
