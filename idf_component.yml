@@ -1,0 +1,7 @@
+version: "0.5.3"
+description: "A chess engine"
+dependencies:
+  idf:
+    version: ">=5.0.0"
+
+  
