@@ -780,7 +780,7 @@ chess_value_t chess_move(chess_game_t* game, chess_index_t index_from, chess_ind
             result = index_to;
         }
         if(result!=CHESS_NONE) {
-            if(score==0 & game->board[result]!=CHESS_NONE) {
+            if(score==0 && game->board[result]!=CHESS_NONE) {
                 score = scoring[CHESS_TYPE(game->board[result])];
             }
             chess_id_t target_id = CHESS_TYPE(game->board[result]);
